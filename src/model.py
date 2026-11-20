@@ -13,12 +13,15 @@ class Word2Vec(nn.Module):
     
     def forward(self, X):
         import torch.nn.functional as F
+        device = next(self.parameters()).device
+        
         x = torch.tensor([self.w2i[i] for i in X])
         x = F.one_hot(x, num_classes=len(self.w2i)).float()
+        x = x.to(device)
         x = self.A(x)
         x = self.B(x)
 
-        return self.sm(x)
+        return x
 
 
 
